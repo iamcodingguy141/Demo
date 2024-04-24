@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solidity Contracts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #25006a;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        h1 {
+            color: aqua;
+
+        }
+
+        pre {
+            white-space: pre-wrap;
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .output-container {
+            background-color: #2d2d2d;
+            color: #00ff00;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Blockchain Technology - I_Precticals</h1>
+
+    <h2>1. Blockchain Constructor</h2>
+    <pre>
+        <code>
+            pragma solidity ^0.8.0;
+
+            contract SimpleBlockchain {
+                
+                struct Block {
+                    uint256 index;
+                    bytes32 data;
+                    uint256 timestamp;
+                    bytes32 previousHash;
+                    bytes32 hash;
+                }
+                
+                Block[] public chain;
+                uint256 public difficulty = 1; // Difficulty for mining
+                
+                event NewBlock(uint256 indexed index, bytes32 indexed data, uint256 timestamp, bytes32 indexed previousHash, bytes32 hash);
+                
+                constructor(bytes32 genesisData) {
+                    addBlock(genesisData);
+                }
+                
+                function addBlock(bytes32 data) public {
+                    Block memory newBlock = Block({
+                        index: chain.length,
+                        data: data,
+                        timestamp: block.timestamp,
+                        previousHash: getLatestBlock().hash,
+                        hash: 0
+                    });
+                    
+                    // Proof of work (basic difficulty adjustment)
+                    while (uint256(newBlock.hash) >> (256 - difficulty) != 0) {
+                        newBlock.hash = keccak256(abi.encodePacked(newBlock.index, newBlock.data, newBlock.timestamp, newBlock.previousHash));
+                        newBlock.timestamp = block.timestamp;
+                    }
+                    
+                    chain.push(newBlock);
+                    emit NewBlock(newBlock.index, newBlock.data, newBlock.timestamp, newBlock.previousHash, newBlock.hash);
+                }
+                
+                function getLatestBlock() public view returns (Block storage) {
+                    require(chain.length > 0, "No blocks in the chain");
+                    return chain[chain.length - 1];
+                }
+            }
+
+        </code>
+    </pre>
+
+    <div class="output-container">
+        <h2>Output</h2>
+
+        <code>
+                // Output here...
+            </code>
+
+    </div>
+
+    <h2>2. Hashing Implementation</h2>
+    <pre>
+        <code>
+            pragma solidity ^0.8.0;
+
+            contract HashingContract {
+                
+                event DataHashed(bytes32 indexed data, bytes32 indexed hash);
+                
+                function hashData(bytes32 inputData) public {
+                    bytes32 hashedData = sha256(abi.encodePacked(inputData));
+                    emit DataHashed(inputData, hashedData);
+                }
+            }
+
+        </code>
+    </pre>
+    <div class="output-container">
+        <h2>Output</h2>
+
+        <code>
+                // Output here...
+            </code>
+
+    </div>
+
+    <h2>3. Metamask Steps</h2>
+    <pre>
+        <code>
+        
+            To set up a MetaMask wallet, follow these steps:
+
+            1. Visit the MetaMask website (https://metamask.io/) and click on "Download."
+            2. Install the MetaMask extension for your browser by clicking on "Install MetaMask for Chrome" (or any other browser you're using).
+            3. After installation, you will be taken to a page to create a wallet or import an existing one. Choose "Create a Wallet."
+            4. You can opt-out of analytics collection by selecting "No Thanks."
+            5. Create a strong password for your wallet and click "Create."
+            6. Watch the informational video about your key and Secret Backup Phrase.
+            7. Click "Reveal Secret Words" to see your 12-word backup phrase. Write it down and store it securely. You can use a password manager for this.
+            8. MetaMask will then ask you to confirm your backup phrase to ensure you have it saved.
+            9. After backing up your phrase, you'll see some security tips. Save a backup in multiple places, never share your phrase, be cautious of phishing, and if you need to back up your phrase again, you can find it in the MetaMask settings under "Security."
+            10. Now you have a wallet set up. To find your Ethereum address, open your wallet by clicking the fox icon in the top right corner. The address will be the letters and numbers starting with "0x" that you can copy and share with others.
+
+        </code>
+    </pre>
+
+    <div class="output-container">
+        <h2>Output</h2>
+
+        <code>
+                // Output here...
+            </code>
+    </div>
+
+</body>
+
+</html>
